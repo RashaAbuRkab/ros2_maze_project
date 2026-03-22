@@ -1,0 +1,17 @@
+# ROS 2 build folders (أهم شيء لعدم رفع ملفات النظام الثقيلة)
+install/
+build/
+log/
+
+# Python related (لمنع رفع ملفات الكاش)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code settings
+.vscode/
+
+# OS related
+.DS_Store
+Thumbs.db
