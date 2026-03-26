@@ -29,11 +29,12 @@ We cloned the official repositories, specifically targeting the jazzy branches t
 
 ```bash
 # Clone the main TurtleBot3 packages
-git clone -b jazzy https://github.com
+git clone -b jazzy https://github.com/ROBOTIS-GIT/turtlebot3.git
 
 # Clone the simulation-specific packages
-git clone -b jazzy https://github.com
+git clone -b jazzy https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
 ```
+
 ### 4. Dependency Management & Compilation
 To ensure all system-level dependencies are met, we utilized rosdep before compiling the workspace using colcon.
 ```bash
@@ -42,10 +43,10 @@ cd ~/ros2_project_ws
 
 # Update and install dependencies
 rosdep update
-rosdep install -i --from-path src --rosdistro jazzy -y
+rosdep install --from-paths src --ignore-src -r -y
 
 # Build the workspace
-colcon build --symlink-install
+colcon build
 
 # Source the overlay
 source install/setup.bash
