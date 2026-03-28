@@ -60,5 +60,7 @@ export TURTLEBOT3_MODEL=burger
 # Launch the Gazebo Sim environment
 ros2 launch turtlebot3_gazebo empty_world.launch.py
 ```
+<img width="1911" height="1012" alt="image" src="https://github.com/user-attachments/assets/8f0952d9-d132-4c08-b287-516eb2e23519" />
+
 
 
