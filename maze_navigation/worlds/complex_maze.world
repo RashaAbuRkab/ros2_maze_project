@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="complex_maze_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="libignition-gazebo-physics-system.so" name="ignition::gazebo::systems::Physics"></plugin>
+    <plugin filename="libignition-gazebo-user-commands-system.so" name="ignition::gazebo::systems::UserCommands"></plugin>
+    <plugin filename="libignition-gazebo-scene-broadcaster-system.so" name="ignition::gazebo::systems::SceneBroadcaster"></plugin>
+    
+    <!-- Note: Sensors plugin is missing intentionally for students to discover -->
+
+    <!-- Lighting and Ground -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Outer Boundary Walls (12x12m) -->
+    <model name="outer_south">
+      <pose>6 -0.075 0.5 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>12 0.15 1</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>12 0.15 1</size></box></geometry><material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_north">
+      <pose>6 12.075 0.5 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>12 0.15 1</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>12 0.15 1</size></box></geometry><material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_west">
+      <pose>-0.075 6 0.5 0 0 1.5708</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>12 0.15 1</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>12 0.15 1</size></box></geometry><material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_east">
+      <pose>12.075 6 0.5 0 0 1.5708</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>12 0.15 1</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>12 0.15 1</size></box></geometry><material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.5 0.5 0.5 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- Inner Maze Walls (Bonus Challenge) -->
+    <!-- Zone 1: Bottom-left barriers -->
+    <model name="w1"><pose>2.25 2 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>4.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>4.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w2"><pose>4.5 1 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>2 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>2 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w3"><pose>3.75 3.5 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>4.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>4.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+    <!-- Zone 2: U-Trap 1 -->
+    <model name="w4"><pose>6 1.75 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w5"><pose>7.5 1.5 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w6"><pose>9 2.5 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>2 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>2 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+    <!-- Zone 3: Middle barrier -->
+    <model name="w7"><pose>1.5 5 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w8"><pose>6.75 5 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>4.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>4.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w9"><pose>3 4.25 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>1.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>1.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+    <!-- Zone 4: Dead end -->
+    <model name="w10"><pose>1.5 6.5 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w11"><pose>1.5 8 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+    <!-- Zone 5: U-Trap 2 -->
+    <model name="w12"><pose>9 7 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>4 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>4 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w13"><pose>10.5 5 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w14"><pose>10.5 6.5 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>3 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>3 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+    <!-- Zone 6: Top barrier -->
+    <model name="w15"><pose>3.75 9 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>7.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>7.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+    <model name="w16"><pose>7.5 9.75 0.5 0 0 1.5708</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>1.5 0.15 1</size></box></geometry></collision><visual name="v"><geometry><box><size>1.5 0.15 1</size></box></geometry><material><ambient>0.8 0.4 0.4 1</ambient><diffuse>0.8 0.4 0.4 1</diffuse></material></visual></link></model>
+
+  </world>
+</sdf>
