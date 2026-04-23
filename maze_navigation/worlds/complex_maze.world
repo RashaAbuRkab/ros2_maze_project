@@ -1,0 +1,214 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="complex_maze_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="libignition-gazebo-physics-system.so"
+            name="ignition::gazebo::systems::Physics"></plugin>
+    <plugin filename="libignition-gazebo-user-commands-system.so"
+            name="ignition::gazebo::systems::UserCommands"></plugin>
+    <plugin filename="libignition-gazebo-scene-broadcaster-system.so"
+            name="ignition::gazebo::systems::SceneBroadcaster"></plugin>
+
+    <!-- Sensors plugin: required for LiDAR and all sensor processing in Gazebo Sim -->
+    <plugin filename="libignition-gazebo-sensors-system.so"
+            name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+   <plugin filename="gz-sim-pose-publisher-system"  	name="gz::sim::systems::PosePublisher">
+ 	 <publish_model_pose>true</publish_model_pose>
+  	<publish_nested_model>true</publish_nested_model>
+    </plugin>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range><constant>0.9</constant>
+        <linear>0.01</linear><quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         OUTER BOUNDARY WALLS  (12 × 12 m arena)
+         ═══════════════════════════════════════════════════════════ -->
+    <model name="outer_south">
+      <pose>6 0 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="outer_north">
+      <pose>6 12 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="outer_west">
+      <pose>0 6 0.5 0 0 1.5708</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="outer_east">
+      <pose>12 6 0.5 0 0 1.5708</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry>
+          <material><ambient>0.4 0.4 0.4 1</ambient><diffuse>0.4 0.4 0.4 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SERPENTINE MAIN BARRIERS
+         Robot path: Start(0.6,0.6) → gap RIGHT → gap LEFT → gap RIGHT
+                     → gap LEFT → gap RIGHT → Goal(11.4,11.4)
+
+         H1  y=2.5   x=0..10    gap RIGHT (x=10..12)
+         H2  y=4.5   x=2..12    gap LEFT  (x=0..2)
+         H3  y=6.5   x=0..10    gap RIGHT (x=10..12)
+         H4  y=8.5   x=2..12    gap LEFT  (x=0..2)
+         H5  y=10.5  x=0..10    gap RIGHT (x=10..12)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- H1: y=2.5, x=0..10, gap RIGHT -->
+    <model name="h1">
+      <pose>5 2.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>10 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 1</size></box></geometry>
+          <material><ambient>0.8 0.4 0.2 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- H2: y=4.5, x=2..12, gap LEFT -->
+    <model name="h2">
+      <pose>7 4.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>10 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 1</size></box></geometry>
+          <material><ambient>0.8 0.4 0.2 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- H3: y=6.5, x=0..10, gap RIGHT -->
+    <model name="h3">
+      <pose>5 6.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>10 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 1</size></box></geometry>
+          <material><ambient>0.8 0.4 0.2 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- H4: y=8.5, x=2..12, gap LEFT -->
+    <model name="h4">
+      <pose>7 8.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>10 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 1</size></box></geometry>
+          <material><ambient>0.8 0.4 0.2 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- H5: y=10.5, x=0..10, gap RIGHT -->
+    <model name="h5">
+      <pose>5 10.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>10 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>10 0.2 1</size></box></geometry>
+          <material><ambient>0.8 0.4 0.2 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CHALLENGE FEATURES
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Dead-end stub: bottom-right zone (x=10..12, y=0..2.5)
+         Short wall at y=1.2 creates a pocket below it.
+         Main path passes above y=1.2 in this zone — not affected. -->
+    <model name="dead_end_stub">
+      <pose>11 1.2 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>2 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>2 0.2 1</size></box></geometry>
+          <material><ambient>0.2 0.6 0.8 1</ambient><diffuse>0.2 0.6 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Stub wall 1: corridor between H2 and H3 (y=4.5..6.5)
+         Short horizontal wall at y=5.5, x=3..7 — open at both ends.
+         Forces robot to navigate around it. -->
+    <model name="stub1">
+      <pose>5 5.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>4 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>4 0.2 1</size></box></geometry>
+          <material><ambient>0.2 0.6 0.8 1</ambient><diffuse>0.2 0.6 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Stub wall 2: corridor between H3 and H4 (y=6.5..8.5)
+         Short horizontal wall at y=7.5, x=3..8 — open at both ends. -->
+    <model name="stub2">
+      <pose>5.5 7.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>5 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>5 0.2 1</size></box></geometry>
+          <material><ambient>0.2 0.6 0.8 1</ambient><diffuse>0.2 0.6 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Stub wall 3: corridor between H4 and H5 (y=8.5..10.5)
+         Short horizontal wall at y=9.5, x=4..9 — open at both ends. -->
+    <model name="stub3">
+      <pose>6.5 9.5 0.5 0 0 0</pose><static>true</static>
+      <link name="link">
+        <collision name="c"><geometry><box><size>5 0.2 1</size></box></geometry></collision>
+        <visual name="v"><geometry><box><size>5 0.2 1</size></box></geometry>
+          <material><ambient>0.2 0.6 0.8 1</ambient><diffuse>0.2 0.6 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
