@@ -14,6 +14,7 @@ Your completed planner node should use the following ROS 2 topics:
 - `/odom` (`nav_msgs/msg/Odometry`): Current robot position and orientation.
 - `/scan` (`sensor_msgs/msg/LaserScan`): LiDAR data for obstacle detection.
 - `/cmd_vel`: Velocity commands sent to the robot. (Hint: check if your robot expects `Twist` or `TwistStamped` in Jazzy).
+- `/world/maze_world/dynamic_pose/info`: Current pose of the robot in the Gazebo sim (used to avoid drifting problem when using /odom topic)
 
 ## Parameters
 
@@ -23,9 +24,9 @@ You can tune the planner behavior without recompiling by passing parameters at r
 - `k_rep`: Repulsive gain (push away from walls).
 - `d_obs`: Distance of influence for obstacles.
 
-Example:
+To run the maze and the APF planner:
 ```bash
-ros2 run maze_navigation potential_field_planner --ros-args -p goal_x:=9.0 -p goal_y:=9.0 -p k_rep:=250.0
+ros2 launch maze_navigation maze_sim.launch.py
 ```
 
 Good luck with your implementation!
